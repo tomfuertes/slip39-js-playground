@@ -1,0 +1,50 @@
+diff --git a/node_modules/pbkdf2/lib/async.js b/node_modules/pbkdf2/lib/async.js
+index 3af2c49..4199fc0 100644
+--- a/node_modules/pbkdf2/lib/async.js
++++ b/node_modules/pbkdf2/lib/async.js
+@@ -4,6 +4,7 @@ var checkParameters = require('./precondition')
+ var defaultEncoding = require('./default-encoding')
+ var sync = require('./sync')
+ var toBuffer = require('./to-buffer')
++const global = globalThis;
+ 
+ var ZERO_BUF
+ var subtle = global.crypto && global.crypto.subtle
+diff --git a/node_modules/pbkdf2/lib/default-encoding.js b/node_modules/pbkdf2/lib/default-encoding.js
+index 3042099..36633d1 100644
+--- a/node_modules/pbkdf2/lib/default-encoding.js
++++ b/node_modules/pbkdf2/lib/default-encoding.js
+@@ -1,8 +1,8 @@
+ var defaultEncoding
+ /* istanbul ignore next */
+-if (global.process && global.process.browser) {
++if (globalThis.process && globalThis.process.browser) {
+   defaultEncoding = 'utf-8'
+-} else if (global.process && global.process.version) {
++} else if (globalThis.process && globalThis.process.version) {
+   var pVersionMajor = parseInt(process.version.split('.')[0].slice(1), 10)
+ 
+   defaultEncoding = pVersionMajor >= 6 ? 'utf-8' : 'binary'
+diff --git a/node_modules/pbkdf2/lib/sync-browser.js b/node_modules/pbkdf2/lib/sync-browser.js
+index 20a64b4..d3b6933 100644
+--- a/node_modules/pbkdf2/lib/sync-browser.js
++++ b/node_modules/pbkdf2/lib/sync-browser.js
+@@ -1,7 +1,7 @@
+ var md5 = require('create-hash/md5')
+ var RIPEMD160 = require('ripemd160')
+ var sha = require('sha.js')
+-var Buffer = require('safe-buffer').Buffer
++var Buffer = require('safe-buffer').Buffer || require('safe-buffer').default
+ 
+ var checkParameters = require('./precondition')
+ var defaultEncoding = require('./default-encoding')
+diff --git a/node_modules/pbkdf2/lib/to-buffer.js b/node_modules/pbkdf2/lib/to-buffer.js
+index ef0d4d4..e48cc5c 100644
+--- a/node_modules/pbkdf2/lib/to-buffer.js
++++ b/node_modules/pbkdf2/lib/to-buffer.js
+@@ -1,4 +1,4 @@
+-var Buffer = require('safe-buffer').Buffer
++var Buffer = require('safe-buffer').Buffer || require('safe-buffer').default
+ 
+ module.exports = function (thing, encoding, name) {
+   if (Buffer.isBuffer(thing)) {

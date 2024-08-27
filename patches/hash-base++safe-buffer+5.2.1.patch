@@ -1,0 +1,15 @@
+diff --git a/node_modules/hash-base/node_modules/safe-buffer/index.js b/node_modules/hash-base/node_modules/safe-buffer/index.js
+index f8d3ec9..b6e1e41 100644
+--- a/node_modules/hash-base/node_modules/safe-buffer/index.js
++++ b/node_modules/hash-base/node_modules/safe-buffer/index.js
+@@ -1,6 +1,10 @@
+ /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+ /* eslint-disable node/no-deprecated-api */
+ var buffer = require('buffer')
++
++// patch build
++if (!buffer.Buffer && buffer.default) buffer.Buffer = buffer.default;
++
+ var Buffer = buffer.Buffer
+ 
+ // alternative to using Object.keys for old browsers

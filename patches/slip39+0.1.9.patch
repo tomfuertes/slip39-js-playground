@@ -1,8 +1,34 @@
+diff --git a/node_modules/slip39/src/slip39.js b/node_modules/slip39/src/slip39.js
+index aff1c16..3e743c2 100644
+--- a/node_modules/slip39/src/slip39.js
++++ b/node_modules/slip39/src/slip39.js
+@@ -54,6 +54,7 @@ class Slip39 {
+       groups = [[1, 1, "Default 1-of-1 group share"]],
+       iterationExponent = 0,
+       extendableBackupFlag = 1,
++      identifier,
+       title = "My default slip39 shares",
+     } = {},
+   ) {
+@@ -89,12 +90,10 @@ class Slip39 {
+       }
+     });
+ 
+-    const identifier = slipHelper.generateIdentifier();
+-
+     const slip = new Slip39({
+       iterationExponent: iterationExponent,
+       extendableBackupFlag: extendableBackupFlag,
+-      identifier: identifier,
++      identifier: identifier || slipHelper.generateIdentifier(),
+       groupCount: groups.length,
+       groupThreshold: threshold,
+     });
 diff --git a/node_modules/slip39/src/slip39_helper.js b/node_modules/slip39/src/slip39_helper.js
-index 8bcb956..4540d92 100644
+index 8bcb956..60cd8ca 100644
 --- a/node_modules/slip39/src/slip39_helper.js
 +++ b/node_modules/slip39/src/slip39_helper.js
-@@ -1,11 +1,21 @@
+@@ -1,11 +1,34 @@
  /* eslint-disable no-array-constructor */
  let crypto;
 +if (typeof window !== "undefined" && window.crypto) {
@@ -17,38 +43,36 @@ index 8bcb956..4540d92 100644
  
 +}
 +
-+const Buffer = require('buffer').default;
-+
 +const pbkdf2Sync = require('pbkdf2').pbkdf2Sync;
++crypto.pbkdf2Sync = pbkdf2Sync;
++const createHmac = require('create-hmac');
++crypto.createHmac = createHmac;
 +
- // The length of the radix in bits.
- const RADIX_BITS = 10;
- 
-@@ -164,11 +174,22 @@ function bitsToWords(n) {
-   return b;
- }
- 
++const Buffer = require('safe-buffer').Buffer;
 +/**
 + * Generates cryptographically strong random bytes using the Web Crypto API.
 + * @param {number} size – The number of random bytes to generate.
 + * @returns {Promise<Buffer>} A promise that resolves to a buffer containing random bytes.
 + */
-+function _randombytes(size) {
++crypto.randombytes = function _randombytes(size) {
 +  const array = new Uint8Array(size);
 +  crypto.getRandomValues(array);
 +  return Buffer.from(array.buffer);
 +}
 +
- //
+ // The length of the radix in bits.
+ const RADIX_BITS = 10;
+ 
+@@ -168,7 +191,7 @@ function bitsToWords(n) {
  // Returns a randomly generated integer in the range 0, ... , 2**ID_LENGTH_BITS - 1.
  //
  function randomBytes(length = 32) {
 -  let randoms = crypto.randomBytes(length);
-+  let randoms = _randombytes(length);
++  let randoms = crypto.randombytes(length);
    return Array.prototype.slice.call(randoms, 0);
  }
  
-@@ -180,7 +201,7 @@ function roundFunction(round, passphrase, exp, salt, secret) {
+@@ -180,7 +203,7 @@ function roundFunction(round, passphrase, exp, salt, secret) {
    const roundedPhrase = [round].concat(passphrase);
    const count = (ITERATION_COUNT << exp) / ROUND_COUNT;
  

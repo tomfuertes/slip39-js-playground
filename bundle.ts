@@ -7,7 +7,13 @@
   let htmlContent = await Bun.file(htmlFilePath).text()
 
   // Read the JavaScript file
-  const jsContent = await Bun.file(jsFilePath).text()
+  let jsContent = await Bun.file(jsFilePath).text()
+
+  // patch the jsContent
+  jsContent = jsContent.replace(
+    /^\s+process\.env\.NODE_DEBUG.+$/gm,
+    '/*not node*/'
+  )
 
   // Replace the script tag with the contents of the JavaScript file
   const newScriptTag = `<script type="module">\n${jsContent}\n</script>`

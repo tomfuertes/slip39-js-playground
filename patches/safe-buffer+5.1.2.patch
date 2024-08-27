@@ -1,0 +1,14 @@
+diff --git a/node_modules/safe-buffer/index.js b/node_modules/safe-buffer/index.js
+index 22438da..ed72d20 100644
+--- a/node_modules/safe-buffer/index.js
++++ b/node_modules/safe-buffer/index.js
+@@ -1,5 +1,9 @@
+ /* eslint-disable node/no-deprecated-api */
+ var buffer = require('buffer')
++
++// patch build
++if (!buffer.Buffer && buffer.default) buffer.Buffer = buffer.default;
++
+ var Buffer = buffer.Buffer
+ 
+ // alternative to using Object.keys for old browsers

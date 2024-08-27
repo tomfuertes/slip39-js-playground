@@ -3,6 +3,7 @@
     "build:prep": "cleandir ./dist && touch ./dist/.gitkeep",
     "build:js": "bun build ./main.js --outdir ./dist --target browser",
     "build:html": "cp ./main.html ./dist/",
+    "build:bundle": "bun bundle.ts",
     "build:static": "cp -r ./static  ./dist",
     "serve": "bun serve.ts",
     "build": "npm-run-all build:*",
@@ -17,6 +18,7 @@
     "buffer": "^6.0.3",
     "bun": "^1.1.26",
     "clean-dir": "^1.0.3",
+    "create-hmac": "^1.1.7",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard": "^17.1.0",
@@ -27,7 +29,8 @@
     "patch-package": "^8.0.0",
     "pbkdf2": "^3.1.2",
     "prettier": "3.3.3",
-    "randombytes": "^2.1.0"
+    "randombytes": "^2.1.0",
+    "stream-browserify": "^3.0.0"
   },
   "browser": {
     "crypto": false
