@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slip39 Page</title>
+    <link rel="shortcut icon" type="image/x-icon" href="./static/coding.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        font-size: 2em;
+        margin-bottom: 10px;
+      }
+      p {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+        font-size: 1em;
+        margin-bottom: 20px;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      #output {
+        width: 100%;
+        height: 100vh;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Slip39 Generator</h1>
+
+    <p>
+      This is an introductory paragraph. Please enter your text in the textbox
+      below:
+    </p>
+
+    title: <input id="title" placeholder="title" value="Hello World" />
+    secret:
+    <input
+      id="secret"
+      placeholder="secret"
+      value="aea85ed91857538f809b6a6c5c683a55b6631311b02db02aaeb68f836ad9955c"
+    />
+    passphrase:
+    <input id="passphrase" placeholder="passphrase" value="passphrase" />
+    groupThreshold:
+    <input id="groupThreshold" placeholder="groupThreshold" value="2" />
+    <br />
+    <textarea id="groups-array" placeholder="groups-array">
+[
+  [1, 1, "Alice personal group share 1"],
+  [1, 1, "Alice personal group share 2"],
+  [3, 5, "Friends group share for Bob, Charlie, Dave, Frank and Grace"],
+  [2, 6, "Family group share for mom, dad, brother, sister and wife"]
+]</textarea
+    >
+    <br />
+    <button id="runButton">Run</button>
+
+    <hr />
+
+    <textarea
+      id="output"
+      readonly
+      placeholder="Output will be displayed here..."
+    ></textarea>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

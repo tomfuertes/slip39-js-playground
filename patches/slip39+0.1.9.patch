@@ -1,0 +1,59 @@
+diff --git a/node_modules/slip39/src/slip39_helper.js b/node_modules/slip39/src/slip39_helper.js
+index 8bcb956..4540d92 100644
+--- a/node_modules/slip39/src/slip39_helper.js
++++ b/node_modules/slip39/src/slip39_helper.js
+@@ -1,11 +1,21 @@
+ /* eslint-disable no-array-constructor */
+ let crypto;
++if (typeof window !== "undefined" && window.crypto) {
++  crypto = window.crypto;
++} else {
++
+ try {
+   crypto = require("crypto");
+ } catch (err) {
+   throw new Error("crypto support must be enabled");
+ }
+ 
++}
++
++const Buffer = require('buffer').default;
++
++const pbkdf2Sync = require('pbkdf2').pbkdf2Sync;
++
+ // The length of the radix in bits.
+ const RADIX_BITS = 10;
+ 
+@@ -164,11 +174,22 @@ function bitsToWords(n) {
+   return b;
+ }
+ 
++/**
++ * Generates cryptographically strong random bytes using the Web Crypto API.
++ * @param {number} size – The number of random bytes to generate.
++ * @returns {Promise<Buffer>} A promise that resolves to a buffer containing random bytes.
++ */
++function _randombytes(size) {
++  const array = new Uint8Array(size);
++  crypto.getRandomValues(array);
++  return Buffer.from(array.buffer);
++}
++
+ //
+ // Returns a randomly generated integer in the range 0, ... , 2**ID_LENGTH_BITS - 1.
+ //
+ function randomBytes(length = 32) {
+-  let randoms = crypto.randomBytes(length);
++  let randoms = _randombytes(length);
+   return Array.prototype.slice.call(randoms, 0);
+ }
+ 
+@@ -180,7 +201,7 @@ function roundFunction(round, passphrase, exp, salt, secret) {
+   const roundedPhrase = [round].concat(passphrase);
+   const count = (ITERATION_COUNT << exp) / ROUND_COUNT;
+ 
+-  const key = crypto.pbkdf2Sync(
++  const key = pbkdf2Sync(
+     Buffer.from(roundedPhrase),
+     Buffer.from(saltedSecret),
+     count,
