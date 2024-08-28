@@ -37,3 +37,7 @@ echo "Slip39-JS-v0.1.9"
 curl -s -o slip39-js.tar.gz https://github.com/ilap/slip39-js/archive/refs/tags/v0.1.9.tar.gz
 npm view slip39 | grep latest
 
+echo "Slip39-JS-Playground
+curl -s -o tom-slip39-playground.html https://raw.githubusercontent.com/tomfuertes/slip39-js-playground/main/dist/main.html
+
+
