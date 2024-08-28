@@ -1,3 +1,5 @@
+import { unlinkSync } from 'node:fs'
+
 ;(async () => {
   // Define the paths
   const htmlFilePath = './dist/main.html'
@@ -24,6 +26,8 @@
 
   // Write the updated HTML content back to the file
   await Bun.write(htmlFilePath, htmlContent)
+
+  unlinkSync(jsFilePath)
 
   console.log(
     `Updated ${htmlFilePath}: Replaced script tag with the contents of ${jsFilePath}`
