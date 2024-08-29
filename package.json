@@ -8,6 +8,7 @@
     "serve": "bun serve.ts",
     "build": "npm-run-all build:*",
     "dev": "npm-run-all build serve",
+    "dev:offline": "bun --watch offline.js",
     "postinstall": "patch-package"
   },
   "dependencies": {
