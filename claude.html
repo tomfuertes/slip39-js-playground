@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIP39 to SLIP39 Converter (Multi-group)</title>
+    <script src="https://unpkg.com/bip39@3.1.0/src/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slip39@0.1.7/dist/slip39.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        #error {
+            color: red;
+        }
+        #hexOutput, #slip39Shares {
+            background-color: #f1f1f1;
+            padding: 10px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .group-input {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>BIP39 to SLIP39 Converter (Multi-group)</h1>
+    
+    <label for="mnemonicInput">Enter 24-word BIP39 Mnemonic:</label>
+    <textarea id="mnemonicInput" rows="3" placeholder="Enter your 24-word mnemonic here"></textarea>
+    
+    <div id="error"></div>
+    
+    <h2>Hex Representation:</h2>
+    <div id="hexOutput"></div>
+    
+    <h2>SLIP39 Configuration:</h2>
+    <label for="groupThreshold">Group Threshold:</label>
+    <input type="number" id="groupThreshold" value="2" min="1">
+    
+    <label for="passphrase">Passphrase (optional):</label>
+    <input type="text" id="passphrase">
+    
+    <div id="groupsContainer">
+        <div class="group-input">
+            <h3>Group 1</h3>
+            <label for="groupThreshold1">Group Threshold:</label>
+            <input type="number" class="groupThreshold" value="1" min="1">
+            <label for="shareCount1">Number of Shares:</label>
+            <input type="number" class="shareCount" value="1" min="1">
+            <label for="groupLabel1">Group Label:</label>
+            <input type="text" class="groupLabel" value="Group 1">
+        </div>
+    </div>
+    
+    <button onclick="addGroup()">Add Group</button>
+    <button onclick="generateSLIP39Shares()">Generate SLIP39 Shares</button>
+    
+    <h2>SLIP39 Shares:</h2>
+    <div id="slip39Shares"></div>
+
+    <script>
+        function handleMnemonicChange() {
+            const mnemonic = document.getElementById('mnemonicInput').value;
+            const errorElement = document.getElementById('error');
+            const hexOutputElement = document.getElementById('hexOutput');
+            
+            errorElement.textContent = '';
+            hexOutputElement.textContent = '';
+
+            if (bip39.validateMnemonic(mnemonic)) {
+                const entropy = bip39.mnemonicToEntropy(mnemonic);
+                hexOutputElement.textContent = entropy;
+            } else if (mnemonic.split(' ').length === 24) {
+                errorElement.textContent = 'Invalid mnemonic';
+            }
+        }
+
+        function addGroup() {
+            const groupsContainer = document.getElementById('groupsContainer');
+            const groupCount = groupsContainer.children.length + 1;
+            
+            const newGroup = document.createElement('div');
+            newGroup.className = 'group-input';
+            newGroup.innerHTML = `
+                <h3>Group ${groupCount}</h3>
+                <label for="groupThreshold${groupCount}">Group Threshold:</label>
+                <input type="number" class="groupThreshold" value="1" min="1">
+                <label for="shareCount${groupCount}">Number of Shares:</label>
+                <input type="number" class="shareCount" value="1" min="1">
+                <label for="groupLabel${groupCount}">Group Label:</label>
+                <input type="text" class="groupLabel" value="Group ${groupCount}">
+            `;
+            
+            groupsContainer.appendChild(newGroup);
+        }
+
+        function generateSLIP39Shares() {
+            const hexRepresentation = document.getElementById('hexOutput').textContent;
+            const groupThreshold = parseInt(document.getElementById('groupThreshold').value);
+            const passphrase = document.getElementById('passphrase').value;
+            const errorElement = document.getElementById('error');
+            const slip39SharesElement = document.getElementById('slip39Shares');
+            
+            if (!hexRepresentation) {
+                errorElement.textContent = 'Please enter a valid BIP39 mnemonic first';
+                return;
+            }
+
+            try {
+                const masterSecret = new Uint8Array(hexRepresentation.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+                const groups = Array.from(document.getElementsByClassName('group-input')).map(group => {
+                    return [
+                        parseInt(group.querySelector('.groupThreshold').value),
+                        parseInt(group.querySelector('.shareCount').value),
+                        group.querySelector('.groupLabel').value
+                    ];
+                });
+
+                const slip39Result = slip39.fromArray(masterSecret, {
+                    passphrase: passphrase,
+                    threshold: groupThreshold,
+                    groups: groups,
+                });
+
+                let sharesOutput = '';
+                slip39Result.fromArrayResult.shares.forEach((groupShares, groupIndex) => {
+                    sharesOutput += `Group ${groupIndex + 1} (${groups[groupIndex][2]}):\n`;
+                    groupShares.forEach((share, shareIndex) => {
+                        sharesOutput += `  Share ${shareIndex + 1}: ${share}\n`;
+                    });
+                    sharesOutput += '\n';
+                });
+
+                slip39SharesElement.textContent = sharesOutput;
+            } catch (err) {
+                errorElement.textContent = 'Error generating SLIP39 shares: ' + err.message;
+            }
+        }
+
+        document.getElementById('mnemonicInput').addEventListener('input', handleMnemonicChange);
+    </script>
+</body>
+</html>
