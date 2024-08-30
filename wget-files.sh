@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Are you CDed into the transient USB volume/directory? Continue y/N?"
 read -r answer
