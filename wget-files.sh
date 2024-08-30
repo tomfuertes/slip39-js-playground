@@ -2,7 +2,7 @@
 
 echo "Are you CDed into the transient USB volume/directory? Continue y/N?"
 read -r answer
-if [[ "$answer" =~ ^[Yy]$ ]]; then
+if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
   echo "Continuing..."
 else
   echo "Aborting..."
