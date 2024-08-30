@@ -16,7 +16,7 @@ echo "Downloading solana"
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/solana-labs/solana/releases/latest/download/solana-release-x86_64-unknown-linux-gnu.tar.bz2
 
 echo "Downloading Ian Coleman BIP39"
-wget https://github.com/iancoleman/bip39/releases/latest/download/bip39-standalone.html
+wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/iancoleman/bip39/releases/latest/download/bip39-standalone.html
 mv bip39-standalone.html ian-bip39.html
 
 echo "Downloading Ian Coleman Shamir"
