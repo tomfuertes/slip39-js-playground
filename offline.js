@@ -1,7 +1,8 @@
 const slip39 = require('slip39')
 // threshold (N) number of group-shares required to reconstruct the master secret.
 const groupThreshold = 4
-const hexSecret = 'c4b6d998c265c56c983731676ea732e4'
+const hexSecret =
+  '1990635ae88560f7743d0eaf728125e5de6364eac080244ebb560ce9b4e77651'
 const passphrase = ''
 const isoTimestamp = new Date().toISOString()
 const title = `TomF SSSS Offline Slip39 Example - ${isoTimestamp}`
@@ -39,15 +40,38 @@ if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true })
 }
 
+const SEPARATOR = '\n'
+const indexToChar = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+
 // Write to the file
 fs.writeFileSync(
   filePath,
   [
+    `hexSecret: ${hexSecret}`,
+    `ID: ${hexSecret}:`,
+    groups
+      .map(([_, groupCount, groupName], groupIndex) => {
+        const results = []
+        for (let index = 0; index < groupCount; index++) {
+          const mnemonic = slip.fromPath(`r/${groupIndex}/${index}`).mnemonics
+          results.push(
+            ` - ${indexToChar[groupIndex]}: ${groupName} (${index + 1}/${groupCount}): ${mnemonic}`
+          )
+        }
+        return results.join(SEPARATOR)
+      })
+      .join(SEPARATOR),
+
+    SEPARATOR,
+    '---DEBUG---',
+    SEPARATOR,
     JSON.stringify({ hexSecret, ...args }, null, 2),
     JSON.stringify(slip, null, 2),
-  ].join('|||'),
+  ].join(SEPARATOR),
   'utf8'
 )
 
 console.log(`File written to ${filePath}`)
 console.log(fs.readFileSync(filePath).toString())
+
+console.log(`Write these down then wipe and uninstall tails`)
