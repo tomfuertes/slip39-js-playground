@@ -13,7 +13,7 @@ echo "Downloading Node.js"
 curl -s -O https://nodejs.org/download/release/latest/$(curl -s https://nodejs.org/download/release/latest/ | grep -o 'node-v[0-9]\+\.[0-9]\+\.[0-9]\+-linux-x64\.tar\.xz' | head -n 1)
 
 echo "Downloading solana"
-curl -s -O https://github.com/solana-labs/solana/releases/latest/download/solana-install-init-x86_64-unknown-linux-gnu
+wget -q --show-progress --max-redirect=20 --no-server-response https://github.com/solana-labs/solana/releases/latest/download/solana-install-init-x86_64-unknown-linux-gnu
 
 echo "Downloading Ian Coleman BIP39"
 wget https://github.com/iancoleman/bip39/releases/latest/download/bip39-standalone.html
@@ -38,7 +38,7 @@ echo "Downloading Slip39 Words"
 curl -s -o wordlist-slip39.txt https://raw.githubusercontent.com/satoshilabs/slips/master/slip-0039/wordlist.txt
 
 echo "Slip39-JS-v0.1.9"
-curl -s -o slip39-js.tar.gz https://github.com/ilap/slip39-js/archive/refs/tags/v0.1.9.tar.gz
+wget -q --show-progress --max-redirect=20 --no-server-response https://github.com/ilap/slip39-js/archive/refs/tags/v0.1.9.tar.gz
 npm view slip39 | grep latest
 
 echo "Slip39-JS-Playground"
