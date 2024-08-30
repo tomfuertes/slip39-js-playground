@@ -16,7 +16,8 @@ echo "Downloading solana"
 curl -s -O https://github.com/solana-labs/solana/releases/latest/download/solana-install-init-x86_64-unknown-linux-gnu
 
 echo "Downloading Ian Coleman BIP39"
-curl -s -o ian-bip39.html https://github.com/iancoleman/bip39/releases/latest/download/bip39-standalone.html
+wget https://github.com/iancoleman/bip39/releases/latest/download/bip39-standalone.html
+mv bip39-standalone.html ian-bip39.html
 
 echo "Downloading Ian Coleman Shamir"
 curl -s -o ian-shamir.html https://iancoleman.io/shamir/
