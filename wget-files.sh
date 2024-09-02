@@ -19,6 +19,9 @@ echo "Downloading Ian Coleman BIP39"
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/iancoleman/bip39/releases/latest/download/bip39-standalone.html
 mv bip39-standalone.html ian-bip39.html
 
+echo "Downloading Staking CLI"
+wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/ethereum/staking-deposit-cli/releases/latest/download/staking_deposit-cli-fdab65d-linux-amd64.tar.gz
+
 echo "Downloading Ian Coleman Shamir"
 curl -s -o ian-shamir.html https://iancoleman.io/shamir/
 
