@@ -52,3 +52,8 @@ curl -s -o tom-slip39-playground.html https://raw.githubusercontent.com/tomfuert
 
 echo "Perta Slip39JS Hosted"
 curl -s -o petra-slip39.html https://3rditeration.github.io/slip39/src/
+mkdir js
+cd js
+wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition  https://3rditeration.github.io/slip39/src/js/jquery-3.2.1.js
+wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition  https://3rditeration.github.io/slip39/src/js/slip39-libs.js
+wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition  https://3rditeration.github.io/slip39/src/js/index.js
