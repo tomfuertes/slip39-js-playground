@@ -34,6 +34,9 @@ curl -s -o ian-slip39.html https://iancoleman.io/shamir39/
 echo "Downloading Ian Coleman EIP2333"
 curl -s -o ian-eip2333.html https://iancoleman.io/eip2333/
 
+echo "Downloading ThisBeTom Slip39"
+curl -s -o tom-slip39.html https://tomfuertes.github.io/tails-offline-keygen/
+
 echo "Downloading BIP39 Words"
 curl -s -o wordlist-bip39.txt https://raw.githubusercontent.com/bitcoin/bips/master/bip-0039/english.txt
 
