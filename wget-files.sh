@@ -23,6 +23,12 @@ mv bip39-standalone.html ian-bip39.html
 echo "Downloading Staking CLI"
 wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/ethereum/staking-deposit-cli/releases/latest/download/staking_deposit-cli-fdab65d-linux-amd64.tar.gz
 
+echo "Download RocketPool"
+wget -q --show-progress --max-redirect=20 --no-server-response --content-disposition https://github.com/rocket-pool/smartnode-install/releases/latest/download/rocketpool-cli-linux-amd64
+
+echo "Download wagyu"
+curl -s https://wagyu.gg/ | grep -oP 'href="\K[^"]+\.AppImage' | while read -r link; do curl -O "$link"; done
+
 echo "Downloading Ian Coleman Shamir"
 curl -s -o ian-shamir.html https://iancoleman.io/shamir/
 
