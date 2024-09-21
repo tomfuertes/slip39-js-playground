@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 echo "Are you CDed into the transient USB volume/directory? Continue y/N?"
 read -r answer
@@ -36,7 +36,7 @@ echo "Downloading Ian Coleman Shamir39"
 curl -s -o ian-shamir39.html https://iancoleman.io/shamir39/
 
 echo "Downloading Ian Coleman Slip39"
-curl -s -o ian-slip39.html https://iancoleman.io/shamir39/
+curl -s -o ian-slip39.html https://iancoleman.io/slip39/
 
 echo "Downloading Ian Coleman EIP2333"
 curl -s -o ian-eip2333.html https://iancoleman.io/eip2333/
